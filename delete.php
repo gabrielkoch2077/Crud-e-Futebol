@@ -1,13 +1,13 @@
 <?php
     include 'db.php';
     $id = $_GET['id'];
-    $sql ="DELETE FROM user WHERE id=$id";
-    if($conn ->query($sql) === true){
+    $sql = "DELETE FROM jogadores WHERE id=$id";
+    if($conn->query($sql) === true){
         echo "Registro excluído com sucesso.";
     }else{
-        echo "Erro" . $sql . "<br>" . $conn->error;
+        echo "Erro: " . $sql . "<br>" . $conn->error;
     }
-    $conn -> close();
+    $conn->close();
     header("Location: read.php");
     exit();
 ?>
