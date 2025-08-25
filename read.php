@@ -2,17 +2,17 @@
 
 include 'db.php';
 
-// Buscar times para o select
+
 $times = [];
 $times_result = $conn->query("SELECT id, nome FROM times");
 while ($t = $times_result->fetch_assoc()) {
     $times[] = $t;
 }
 
-// Posições válidas
+
 $posicoes = ['Goleiro', 'Zagueiro', 'Lateral', 'Meio-campo', 'Atacante'];
 
-// Formulário para inserir novo jogador
+
 echo '
 <form action="create.php" method="POST">
     <h3>Inserir novo jogador</h3>
@@ -39,7 +39,7 @@ echo '  </select>
 <hr>
 ';
 
-// Consulta correta para o banco fornecido
+
 $sql = "SELECT jogadores.*, times.nome as nome_time FROM jogadores 
         LEFT JOIN times ON jogadores.time_id = times.id";
 
@@ -108,13 +108,13 @@ if (
     $time1_id = intval($_POST['time1']);
     $time2_id = intval($_POST['time2']);
 
-    // Busca nomes dos times
+  
     $nome1 = $nome2 = '';
     foreach ($times as $t) {
         if ($t['id'] == $time1_id) $nome1 = $t['nome'];
         if ($t['id'] == $time2_id) $nome2 = $t['nome'];
     }
-    // Busca jogadores dos times
+   
     $jogadores1 = [];
     $res1 = $conn->query("SELECT nome, posicao, numero_camisa FROM jogadores WHERE time_id = $time1_id");
     while ($j = $res1->fetch_assoc()) $jogadores1[] = $j;
@@ -125,7 +125,7 @@ if (
 
     echo "<div style='display: flex; justify-content: flex-start; margin-top: 30px;'>";
 echo "<div style='text-align: center; min-width: 400px;'>";
-    // Time 1
+   
     echo "<h3>$nome1</h3>";
     echo "<ul style='list-style: none; padding: 0;'>";
     foreach ($jogadores1 as $j) {
@@ -133,10 +133,10 @@ echo "<div style='text-align: center; min-width: 400px;'>";
     }
     echo "</ul>";
 
-    // X centralizado
+  
     echo "<div style='font-size: 2em; font-weight: bold; margin: 20px 0;'>X</div>";
 
-    // Time 2
+    
     echo "<h3>$nome2</h3>";
     echo "<ul style='list-style: none; padding: 0;'>";
     foreach ($jogadores2 as $j) {
@@ -146,7 +146,7 @@ echo "<div style='text-align: center; min-width: 400px;'>";
 echo "</div>";
 echo "</div>";
 
-// Botão para descartar confronto (reseta o POST)
+
 echo '
 <form method="POST" style="text-align:left; margin-top:20px;">
     <input type="submit" name="descartar" value="Descartar Confronto">

@@ -1,7 +1,6 @@
 <?php
     include 'db.php';
 
-    // Buscar times para o select
     $times = [];
     $times_result = $conn->query("SELECT id, nome FROM times");
     while ($t = $times_result->fetch_assoc()) {
@@ -43,28 +42,7 @@
     <title>Cadastrar Jogador</title>
 </head>
 <body>
-    <form method="POST" action="create.php">
-        <label for="name">Nome:</label>
-        <input type="text" name="name" required><br>
-        <label for="posicao">Posição:</label>
-        <select name="posição" required>
-            <option value="">Selecione</option>
-            
-            <?php foreach ($posicoes as $p): ?>
-                <option value="<?php echo $p; ?>"><?php echo $p; ?></option>
-            <?php endforeach; ?>
-        </select><br>
-        <label for="número_camisa">Número da camisa:</label>
-        <input type="number" name="número_camisa" min="1" max="99" required><br>
-        <label for="time_id">Time:</label>
-        <select name="time_id" required>
-            <option value="">Selecione</option>
-            <?php foreach ($times as $time): ?>
-                <option value="<?php echo $time['id']; ?>"><?php echo $time['nome']; ?></option>
-            <?php endforeach; ?>
-        </select><br>
-        <input type="submit" value="Cadastrar">
-    </form>
-    <a href="read.php">Ver jogadores</a>
+  
+    <a href="read.php">Painel de controle</a>
 </body>
 </html>

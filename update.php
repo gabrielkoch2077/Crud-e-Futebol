@@ -2,14 +2,13 @@
 
     include 'db.php';
 
-    // Buscar times para o select
     $times = [];
     $times_result = $conn->query("SELECT id, nome FROM times");
     while ($t = $times_result->fetch_assoc()) {
         $times[] = $t;
     }
 
-    // Posições válidas
+
     $posicoes = ['Goleiro', 'Zagueiro', 'Lateral', 'Meio-campo', 'Atacante'];
 
     $id = $_GET['id'];
