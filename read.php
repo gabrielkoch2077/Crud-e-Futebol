@@ -1,7 +1,5 @@
 <?php
-
 include 'db.php';
-
 
 $times = [];
 $times_result = $conn->query("SELECT id, nome FROM times");
@@ -9,9 +7,7 @@ while ($t = $times_result->fetch_assoc()) {
     $times[] = $t;
 }
 
-
 $posicoes = ['Goleiro', 'Zagueiro', 'Lateral', 'Meio-campo', 'Atacante'];
-
 
 echo '
 <form action="create.php" method="POST">
@@ -38,7 +34,6 @@ echo '  </select>
 </form>
 <hr>
 ';
-
 
 $sql = "SELECT jogadores.*, times.nome as nome_time FROM jogadores 
         LEFT JOIN times ON jogadores.time_id = times.id";
@@ -73,9 +68,6 @@ if ($result->num_rows > 0) {
     echo "Nenhum registro encontrado.";
 }
 
-?>
-
-<?php
 echo '
 <form action="" method="POST">
     <h3>Criar confronto entre dois times</h3>
@@ -108,13 +100,12 @@ if (
     $time1_id = intval($_POST['time1']);
     $time2_id = intval($_POST['time2']);
 
-  
     $nome1 = $nome2 = '';
     foreach ($times as $t) {
         if ($t['id'] == $time1_id) $nome1 = $t['nome'];
         if ($t['id'] == $time2_id) $nome2 = $t['nome'];
     }
-   
+
     $jogadores1 = [];
     $res1 = $conn->query("SELECT nome, posicao, numero_camisa FROM jogadores WHERE time_id = $time1_id");
     while ($j = $res1->fetch_assoc()) $jogadores1[] = $j;
@@ -123,35 +114,51 @@ if (
     $res2 = $conn->query("SELECT nome, posicao, numero_camisa FROM jogadores WHERE time_id = $time2_id");
     while ($j = $res2->fetch_assoc()) $jogadores2[] = $j;
 
-    echo "<div style='display: flex; justify-content: flex-start; margin-top: 30px;'>";
-echo "<div style='text-align: center; min-width: 400px;'>";
-   
-    echo "<h3>$nome1</h3>";
+
+    $placar_time1 = rand(0, 5);
+    $placar_time2 = rand(0, 5);
+
+    echo "<div style='display: flex; justify-content: space-between; align-items: center; margin-top: 30px; background:rgb(240, 240, 240); padding: 20px; border-radius: 10px;'>";
+
+
+    echo "<div style='flex: 1; text-align: center; padding: 20px; background: white; border-radius: 8px; margin-right: 20px;'>";
+    echo "<h3 style='color: #004aad; margin-bottom: 15px;'>$nome1</h3>";
     echo "<ul style='list-style: none; padding: 0;'>";
     foreach ($jogadores1 as $j) {
-        echo "<li>{$j['nome']} ({$j['posicao']}, {$j['numero_camisa']})</li>";
+        echo "<li style='padding: 5px 0; border-bottom: 1px solid #eee;'>{$j['nome']} <small>({$j['posicao']}, #{$j['numero_camisa']})</small></li>";
     }
     echo "</ul>";
+    echo "</div>";
 
-  
-    echo "<div style='font-size: 2em; font-weight: bold; margin: 20px 0;'>X</div>";
 
+    echo "<div style='display: flex; text-align: center;'>";
+
+    echo "<div style='font-size: 3em; font-weight: bold; color: #333;'>$placar_time1</div>";
+
+    echo "<div style='font-size: 2em; font-weight: bold; color: #666; margin: 10px 0;'>X</div>";
     
-    echo "<h3>$nome2</h3>";
+    echo "<div style='font-size: 3em; font-weight: bold; color: #333;'>$placar_time2</div>";
+
+    echo "</div>";
+   
+
+
+    echo "<div style='flex: 1; text-align: center; padding: 20px; background: white; border-radius: 8px; margin-left: 20px;'>";
+    echo "<h3 style='color: #dc3545; margin-bottom: 15px;'>$nome2</h3>";
     echo "<ul style='list-style: none; padding: 0;'>";
     foreach ($jogadores2 as $j) {
-        echo "<li>{$j['nome']} ({$j['posicao']}, {$j['numero_camisa']})</li>";
+        echo "<li style='padding: 5px 0; border-bottom: 1px solid #eee;'>{$j['nome']} <small>({$j['posicao']}, #{$j['numero_camisa']})</small></li>";
     }
     echo "</ul>";
-echo "</div>";
-echo "</div>";
+    echo "</div>";
 
+    echo "</div>";
 
-echo '
-<form method="POST" style="text-align:left; margin-top:20px;">
-    <input type="submit" name="descartar" value="Descartar Confronto">
-</form>
-';
+    echo '
+    <form method="POST" style="text-align:center; margin-top:20px;">
+        <input type="submit" name="descartar" value="Descartar Confronto" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    </form>
+    ';
 }
+
 $conn->close();
-?>
