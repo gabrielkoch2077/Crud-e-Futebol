@@ -1,19 +1,29 @@
 <?php
 include 'db.php';
-
+$nome = ['nome_usuario'];
+$senha = ['senha_usuario'];
 $times = [];
 $times_result = $conn->query("SELECT id, nome FROM times");
 while ($t = $times_result->fetch_assoc()) {
     $times[] = $t;
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nome = $_POST['nome_usuario'] ?? '';
+    $senha = $_POST['senha_usuario'] ?? '';
+    
+
+    if (!in_array($nome, $senha)) {
+        die("Usuário ou senha inválidos.");
+    }
+}
 $posicoes = ['Goleiro', 'Zagueiro', 'Lateral', 'Meio-campo', 'Atacante'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nome = $_POST['name'];
-    $posicao = $_POST['posicao'];
-    $numero_camisa = $_POST['numero_camisa'];
-    $time_id = $_POST['time_id'];
+    $nome = $_POST['name'] ?? '';
+    $posicao = $_POST['posicao'] ?? '';
+    $numero_camisa = $_POST['numero_camisa'] ?? '';
+    $time_id = $_POST['time_id'] ?? '';
 
     if (!in_array($posicao, $posicoes)) {
         die("Posição inválida.");
@@ -61,16 +71,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .center {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        label,
+        select,
+        input {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
     </style>
 </head>
 
 <body>
     <div class="center">
+        <form method="post">
+            <label>Nome do Jogador:
+                <input type="text" name="name" required>
+            </label>
+            <label>Posição:
+                <select name="posicao" required>
+                    <option value="">Selecione</option>
+                    <?php foreach ($posicoes as $p): ?>
+                        <option value="<?= $p ?>"><?= $p ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label>Número da Camisa:
+                <input type="number" name="numero_camisa" min="1" max="99" required>
+            </label>
+            <label>Time:
+                <select name="time_id" required>
+                    <option value="">Selecione</option>
+                    <?php foreach ($times as $t): ?>
+                        <option value="<?= $t['id'] ?>"><?= $t['nome'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <button type="submit">Cadastrar</button>
+        </form>
         <a href="read.php" class="painel-btn">Painel de Controle</a>
+    </div>
 </body>
 
 </html>

@@ -9,8 +9,15 @@ while ($t = $times_result->fetch_assoc()) {
 
 $posicoes = ['Goleiro', 'Zagueiro', 'Lateral', 'Meio-campo', 'Atacante'];
 
+
+echo '<form action="create.php" method="POST">
+    <label>Nome: <input type="text" name="name" required></label><br>
+    <password>Senha: <input type="password" name="password" required></label><br>
+    <input type="submit" value="Login">
+</form>';
+
 echo '
-<form action="create.php" method="POST">
+<form action="create.php" method="POST">;
     <h3>Inserir novo jogador</h3>
     <label>Nome: <input type="text" name="name" required></label><br>
     <label>Posição:
